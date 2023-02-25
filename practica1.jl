@@ -2,6 +2,8 @@
 #     PROCESAMEINTO DIGITAL DE IMAGENES
 #     PRACTICA 1
 
+# Sencilla manipulacion RGB de imagenes 
+
 using  TestImages, Colors, Images, FileIO
 
 img = testimage("mandrill")
