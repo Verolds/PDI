@@ -37,48 +37,28 @@ img2 = copy(lake);
 img2_cv = channelview(img2);
 img2_p = permuteddimsview(img2_cv, (2,3,1));
 
-img2_p[:, 1:171, 2:3 ] .= 0
-img2_p[:, 172:341, 1] .= 0
-img2_p[:, 172:341, 3] .= 0
-img2_p[:, 342:end, 1:2] .= 0
+#Dividimos el tamaño de la imagen en 3
+t = Int(round(m/3));
+t2 = 2*t;
+
+img2_p[:, 1:t, 2:3 ] .= 0
+img2_p[:, t:t2, 1] .= 0
+img2_p[:, t:t2, 3] .= 0
+img2_p[:, t2:end, 1:2] .= 0
 
 # División horizontal de la imagen
+
 img3 = copy(lake);
 img3_cv = channelview(img3);
 img3_p = permuteddimsview(img3_cv, (2,3,1));
 
-img3_p[1:171, :, 2:3 ] .= 0
-img3_p[172:341, :, 1] .= 0
-img3_p[172:341, :, 3] .= 0
-img3_p[342:end, :, 1:2] .= 0
+#Dividimos el tamaño de la imagen en 3
+th = Int(round(n/3));
+th2 = 2*t;
+
+img3_p[1:th, :, 2:3 ] .= 0
+img3_p[th:th2, :, 1] .= 0
+img3_p[th:th2, :, 3] .= 0
+img3_p[th2:end, :, 1:2] .= 0
 
 BC = mosaicview(lake, img2, img3; nrow=1);
-
-img_path = "/home/verolds/Documents/Code/IMG/images.png"
-letra = load(img_path)
-
-letra_f = copy(letra)
-l_cv = channelview(letra_f)
-l_p = permuteddimsview(l_cv, (2,3,1))
-
-l_verde = copy(l_p);
-
-# Fondo rojo y azul
-l_p[:, 1:90,2:3] .= 0
-l_p[:, 91:end,1:2] .= 0
-
-# Letra verde
-l_verde[20:267, 8:76,1] .= 0
-l_verde[20:267, 8:76,3] .= 0
-
-l_verde[20:72, 76:176,1] .= 0
-l_verde[20:72, 76:176,3] .= 0
-
-l_verde[115:165, 76:161,1] .= 0
-l_verde[115:165, 76:161,3] .= 0
-
-l_p[20:267, 8:76,:] = l_verde[20:267, 8:76,:];
-l_p[20:72, 76:176,:] = l_verde[20:72, 76:176,:];
-l_p[115:165, 76:161,:] = l_verde[115:165, 76:161,:];
-
-D = mosaicview(letra, letra_f; nrow=1);
