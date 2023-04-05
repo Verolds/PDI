@@ -1,4 +1,3 @@
-using Plots: size
 #     INSTITUTO POLITÉCNICO NACIONAL
 #     ESCUELA SUPERIOR DE COMPUTO
 #     PROCESAMEINTO DIGITAL DE IMAGENES
@@ -40,7 +39,7 @@ function seleccion(img, pos)
                         contador += 1;
                         println("\nvalor $contador agregado")
                     else
-                        println("ERROS SOLO $repre VALORES")
+                        return println("ERROS SOLO $repre VALORES")
                     end
             end
         end
@@ -48,7 +47,7 @@ function seleccion(img, pos)
         print("Si deseas salir de seleccion ingresa 'q' ");
         input = readline(stdin);
         if input == "q"
-            break;
+            return
         end
     end
 end
@@ -56,7 +55,7 @@ end
                         
 function main()
     # Seleccion de imagen
-    img = load("/Users/macbook/Desktop/ESCOM/4SEM/IMG/Parcial1/Belgium.png");
+    img = load("4SEM/IMG/Parcial1/Practicas/Images/Belgium.png");
     m, n =size(img)
     descA=[]
 
@@ -69,10 +68,13 @@ function main()
     for i in 1:cInput
         println("##############################")
         println("Slecciona la clase $i:")
+        println("##############################")
         seleccion(img, i) 
     end
 
+    println("\n##############################")
     println("Ingresa el numero de representantes: ");
+    println("##############################")
     rInput = parse(Int64, readline(stdin))
 
     for  i in 1:cInput
@@ -83,20 +85,21 @@ function main()
             pixel = img[x,y]
             pixelAux = [x y];
 
-            println("Analizando [$pixelAux]")
+            println("Analizando $pixelAux")
             
             if pixel == clases[i][1]
                 push!(clases[i], pixel)
                 push!(clasesAux[i], pixelAux)
                 cont+=1
                 println("\n##############################")
-                println("Valor [$pixelAux] aceptado")
+                println("Valor $pixelAux aceptado")
                 println("Representante $cont agregado a clase $i")
                 println("##############################\n")
             end   
         end
     end
 
+    # ARREGLOS AUXILIARES PARA GRAFICAR
     X1 = []; dividr(clasesAux[1], X1, 1)
     Y1 = []; dividr(clasesAux[1], Y1, 2)
     X2 = []; dividr(clasesAux[2], X2, 1)
@@ -104,15 +107,20 @@ function main()
     X3 = []; dividr(clasesAux[3], X3, 1)
     Y3 = []; dividr(clasesAux[3], Y3, 2)
 
+    # GRAFICANDO
     anim = Animation()
     scatter(Y1, X1, color=:black, label=false)
     scatter!(Y2, X2, color=:yellow, label=false)
     scatter!(Y3, X3, color=:red3, label=false)
-    frame(anim)
+    frame(anim) 
 
-    s = mostrar(img); 
     #INICIO
-    println("\n\nSelecciona un pixel aleatorio: ")
+    s = mostrar(img);
+
+    println("\n##############################")
+    println("Selecciona un pixel ahora: ")
+    println("\n##############################")
+
     while true
         #Leemos posicion del mouse 
         map(s["gui"]["canvas"].mouse.buttonpress) do btn
@@ -129,14 +137,16 @@ function main()
                     push!(comp, mean(clases[i][1:end]))
                 end
            
+                # Si cambias de imagen cambiar Dict
                 local d = Dict( "Negro" => distancia(desc,comp,1), "Amarillo" => distancia(desc,comp,2), "Rojo" => distancia(desc,comp,3));
                 local min = minimum(values(d));
 
+                # GRAFICAR PUNTO SELECCIONADO
                 Xd = []; dividr(descA, Xd, 1)
                 Yd = []; dividr(descA, Yd, 2)
                 scatter!(Yd, Xd, color=:green, label=false)
                 frame(anim)
-                gif(anim, "/Users/macbook/Desktop/ESCOM/4SEM/IMG/Parcial1/p4.gif", fps = 15)
+                gif(anim, "4SEM/IMG/Parcial1/Practicas/Images/p4.gif", fps = 15)
 
                 for (k, v) = d
                     if (v == min)
