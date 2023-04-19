@@ -1,5 +1,5 @@
 # PDI
-Prácticas procesamiento digital de imagenes
+Prácticas procesamiento digital de imagenes - ESCOM - IPN
 
 Práctica 1: componentes RGB de la imaén.
 
@@ -13,5 +13,6 @@ Práctica 5: Comprimir o expandir el histograma.
 
 Práctica 6_2: Ecualización del Histograma.
 
-Práctica 6:3: Histogram Matching.
+Práctica 6_3: Histogram Matching.
 
+Práctica 7: Image compression DPCM
