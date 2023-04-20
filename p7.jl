@@ -1,10 +1,10 @@
-#     ESCUELA SUPERIOR DE COMPUTO
+#     ESCUELA SUPERIOR DE COMPUTO IPN 
 #     PROCESAMEINTO DIGITAL DE IMAGENES
 #     PRACTICA 7
 
 using TestImages, ImageView, Images
 
-function predictor(A::AbstractArray)
+function predictor(A)
     #Create matrix 
     out = zeros(size(A))
     # Get Indices of A to iterate
@@ -33,17 +33,27 @@ function predictor(A::AbstractArray)
 end
 
 function main()
-   #  Load Image
+    #  Load Image
     img_og = testimage("fabio_gray_256")
     # Image size
     n,m = size(img_og)
     # Create Predictor matrix
     P = zeros(n,m)
-    # Copy high frecuencies
-    P[1, 1:end] = img_og[1, 1:end]
-    P[1:end, 1] = img_og[1:end, 1]
-    
-    predictor(transpose(P))
+    # blocs 8x8
+    bloque = 8
+
+    for i in 1:bloque-1:n - bloque+1
+        for j in 1:bloque-1:m - bloque+1
+            p_aux = zeros(bloque,bloque)
+            @views aux = img_og[i:i + bloque-1, j:j + bloque-1]
+            p_aux[1, 1:end] = aux[1, 1:end]
+            p_aux[1:end, 1] = aux[1:end, 1]
+            predictor(transpose(p_aux))
+
+            P[i:i + bloque-1, j:j + bloque-1] = p_aux
+        end
+    end
+   
     # Error matrix 
     E = img_og - P
 
@@ -72,7 +82,7 @@ function main()
                 end
             end
         end
-        
+        #intervalo
         inversa = []
         
         for x in 1:length(intervalo)
@@ -95,11 +105,13 @@ function main()
         #Final matrix
         M_recup = Q_inv  + P
         
-        imshow(mosaicview(img_og, P, E, M_recup))
+        k= mosaicview(img_og, P, E, M_recup; nrow=2)
+        display(k)
+        s_n = 10 * log10(sum(Float64.(img_og).^2) / sum((Float64.(img_og) - M_recup).^2))
+        println("Signal/Noice : $s_n")
 
         println("\n########################################")
-        println("Si deseas salir del programa ingresa 'q'")
-        println("Para continuar ingresa cualquier tecla")
+        println("Si deseas salir del programa ingresa 'q' o presiona cualquier tecla")
         op = readline()
         if op  == "q"
             break
