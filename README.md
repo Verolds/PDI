@@ -16,3 +16,7 @@ Práctica 6_2: Ecualización del Histograma.
 Práctica 6_3: Histogram Matching.
 
 Práctica 7: Image compression DPCM
+
+Práctica 8: Image compression TCD
+
+Práctica 9: Image compression JPEG
