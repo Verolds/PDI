@@ -20,3 +20,5 @@ Práctica 7: Image compression DPCM
 Práctica 8: Image compression TCD
 
 Práctica 9: Image compression JPEG
+
+Práctica 10: Image compression Huffman
